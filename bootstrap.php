@@ -18,7 +18,7 @@ require_once __DIR__ . "/vendor/autoload.php";
 define("SULUVIR_ROOT_DIR", __DIR__ . "/");
 
 $configFile = __DIR__ . SULUVIR_CONFIG_FILE;
-if (file_exists($configFile)) {
+if (!file_exists($configFile)) {
     $configFile = __DIR__ . SULUVIR_FALLBACK_CONFIG_FILE;
 }
 
