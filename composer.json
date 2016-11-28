@@ -17,6 +17,10 @@
         "files": ["includes/constants.php"]
     },
 
+    "scripts": {
+        "test": "phpunit -c phpunit.xml"
+    },
+
     "require": {
         "php": ">=5.6",
         "yarf/yarf": "^0.0.1",
