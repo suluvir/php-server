@@ -13,6 +13,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/bootstrap.php";
+namespace Suluvir\Page;
 
-require_once SULUVIR_ROOT_DIR . "bootstrapPage.php";
+
+use Yarf\exc\web\HttpBadRequest;
+use Yarf\page\HtmlPage;
+
+class Index extends HtmlPage {
+
+    public function get() {
+        throw new HttpBadRequest("This service has no homepage, yet");
+    }
+
+}

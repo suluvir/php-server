@@ -13,6 +13,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/bootstrap.php";
+$pageMap = [
+    "" => \Suluvir\Page\Index::class
+];
 
-require_once SULUVIR_ROOT_DIR . "bootstrapPage.php";
+$router = new \Yarf\Router();
+$router->route($pageMap);
