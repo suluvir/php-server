@@ -13,15 +13,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/vendor/autoload.php";
+require_once __DIR__ . "/bootstrap.php";
 
-define("SULUVIR_ROOT_DIR", __DIR__ . "/");
-
-$configFile = __DIR__ . SULUVIR_CONFIG_FILE;
-if (!file_exists($configFile)) {
-    $configFile = __DIR__ . SULUVIR_FALLBACK_CONFIG_FILE;
-}
-
-\Suluvir\Config\Configuration::loadConfiguration($configFile);
-
-require_once SULUVIR_ROOT_DIR . "bootstrapDoctrine.php";
+return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet(\Suluvir\Schema\EntityManager::getEntityManager());

@@ -13,15 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/vendor/autoload.php";
+namespace Suluvir\Schema;
 
-define("SULUVIR_ROOT_DIR", __DIR__ . "/");
 
-$configFile = __DIR__ . SULUVIR_CONFIG_FILE;
-if (!file_exists($configFile)) {
-    $configFile = __DIR__ . SULUVIR_FALLBACK_CONFIG_FILE;
+class EntityManager {
+
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private static $entityManager;
+
+    public static function setEntityManager(\Doctrine\ORM\EntityManager $entityManager) {
+        if (static::$entityManager !== null) {
+            throw new \RuntimeException("EntityManager can only be set once");
+        }
+        static::$entityManager = $entityManager;
+    }
+
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
+    public static function getEntityManager() {
+        return static::$entityManager;
+    }
+
 }
-
-\Suluvir\Config\Configuration::loadConfiguration($configFile);
-
-require_once SULUVIR_ROOT_DIR . "bootstrapDoctrine.php";
