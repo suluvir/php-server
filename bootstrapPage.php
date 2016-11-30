@@ -14,7 +14,8 @@
 // limitations under the License.
 
 $pageMap = [
-    "" => \Suluvir\Page\Index::class
+    "" => \Suluvir\Page\Index::class,
+    "upload" => \Suluvir\Page\Upload::class
 ];
 
 $router = new \Yarf\Router();
