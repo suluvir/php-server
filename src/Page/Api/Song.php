@@ -13,15 +13,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-$pageMap = [
-    "" => \Suluvir\Page\Index::class,
+namespace Suluvir\Page\Api;
 
-    "api" => [
-        "song" => \Suluvir\Page\Api\Song::class
-    ],
 
-    "upload" => \Suluvir\Page\Upload::class
-];
+use Suluvir\Log\Logger;
+use Suluvir\Schema\EntityManager;
+use Yarf\page\JsonPage;
+use Yarf\request\Request;
+use Yarf\response\Response;
 
-$router = new \Yarf\Router();
-$router->route($pageMap);
+class Song extends JsonPage {
+
+    public function get(Request $request, Response $response, $songId) {
+        $entityManager = EntityManager::getEntityManager();
+
+        if ($songId === null) {
+            $songs = $entityManager->getRepository(\Suluvir\Schema\Media\Song::class)->findAll();
+        } else {
+            $songs = null;
+        }
+
+        $response->result($songs);
+        return $response;
+    }
+
+}

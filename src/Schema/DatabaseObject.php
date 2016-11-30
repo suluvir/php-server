@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping\MappedSuperclass;
  *
  * @MappedSuperclass
  */
-class DatabaseObject {
+abstract class DatabaseObject implements \JsonSerializable {
 
     /**
      * @Id
@@ -35,5 +35,25 @@ class DatabaseObject {
      * @var int the primary key
      */
     protected $id;
+
+    public function jsonSerialize() {
+        $result = [];
+        $reflectionObject = new \ReflectionObject($this);
+
+        foreach ($reflectionObject->getProperties() as $property) {
+            $accessible = $property->isPrivate() || $property->isProtected();
+            $property->setAccessible(true);
+            $result[$property->getName()] = $this->serializeDatetime($property->getValue($this));
+            $property->setAccessible($accessible);
+        }
+        return $result;
+    }
+
+    private function serializeDatetime($value) {
+        if ($value instanceof \DateTime) {
+            return $value->format(DATE_ISO8601);
+        }
+        return $value;
+    }
 
 }
