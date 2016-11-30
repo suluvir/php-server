@@ -54,16 +54,22 @@ class Song extends DatabaseObject {
     private $size;
 
     /**
+     * @Column(type="string", length=1024, nullable=true)
+     *
+     * @var string the songs title
+     */
+    private $title;
+
+    /**
      * @Column(type="datetime")
      *
      * @var \DateTime time of creation
      */
     private $creation;
 
-    public function __construct() {
-        // FIXME calculate file type extension
+    public function __construct($fileName) {
         $this->fileName = Uuid::uuid4()->toString();
-        $this->extension = "mp3";
+        $this->extension = pathinfo($fileName, PATHINFO_EXTENSION);
         $this->creation = new \DateTime();
     }
 
@@ -86,6 +92,27 @@ class Song extends DatabaseObject {
      */
     public function getSize() {
         return $this->size;
+    }
+
+    /**
+     * @return string the title
+     */
+    public function getTitle() {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title the new title
+     */
+    public function setTitle($title) {
+        $this->title = $title;
+    }
+
+    /**
+     * @param int $size the new size
+     */
+    public function setSize($size) {
+        $this->size = $size;
     }
 
 }

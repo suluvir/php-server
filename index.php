@@ -16,3 +16,5 @@
 require_once __DIR__ . "/bootstrap.php";
 
 require_once SULUVIR_ROOT_DIR . "bootstrapPage.php";
+
+\Suluvir\Schema\EntityManager::getEntityManager()->flush();

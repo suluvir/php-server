@@ -25,5 +25,3 @@ if (!file_exists($configFile)) {
 \Suluvir\Config\Configuration::loadConfiguration($configFile);
 
 require_once SULUVIR_ROOT_DIR . "bootstrapDoctrine.php";
-
-\Suluvir\Schema\EntityManager::getEntityManager()->flush();

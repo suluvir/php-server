@@ -16,24 +16,47 @@
 namespace Suluvir\Manager\Media;
 
 
+use Suluvir\Config\Configuration;
+use Suluvir\Manager\Metadata\SongMetadataExtractor;
 use Suluvir\Schema\Media\Song;
 
 class SongManager {
 
     /**
+     * @param string $fileName the filename
      * @return Song a new song
      */
-    public static function createSong() {
-        return new Song();
+    public static function createSong($fileName) {
+        return new Song($fileName);
     }
 
     /**
      * Calculates the path the audio file for the song is saved
      *
      * @param Song $song the song to get the path for
+     * @return string the absolute file name for the given songs audio file
      */
     public static function getAbsolutePath(Song $song) {
+        $config = Configuration::getConfiguration();
+        $directory = $config->get("upload", "directory");
+        if ($config->get("upload", "relative")) {
+            $directory = SULUVIR_ROOT_DIR . $directory;
+        }
+        $directory = $directory . "/";
+        return $directory . $song->getFileName();
+    }
 
+    /**
+     * @param Song $song the song to popularize the metadata for
+     * @return Song the song with popularized metadata
+     */
+    public static function popularizeMetadata(Song $song) {
+        $metadataExtractor = new SongMetadataExtractor($song);
+
+        $song->setTitle($metadataExtractor->getTitle());
+        $song->setSize($metadataExtractor->getSize());
+
+        return $song;
     }
 
 }

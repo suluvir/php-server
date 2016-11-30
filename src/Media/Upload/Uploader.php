@@ -44,28 +44,18 @@ class Uploader {
      * @throws \RuntimeException if the song cannot be uploaded
      */
     public function upload() {
-        $targetDir = $this->getTargetDirectory();
-        $song = SongManager::createSong();
-        $targetFile = $targetDir . $song->getFileName() . $song->getExtension();
+        $song = SongManager::createSong($this->file["name"]);
+        $targetFile = SongManager::getAbsolutePath($song);
         Logger::getLogger()->info("Uploading {$this->file['name']} to $targetFile");
 
         if (move_uploaded_file($this->file["tmp_name"], $targetFile)) {
+            $song = SongManager::popularizeMetadata($song);
             EntityManager::getEntityManager()->persist($song);
-            EntityManager::getEntityManager()->flush();
         } else {
             throw new \RuntimeException("can't upload song");
         }
 
         return $song;
-    }
-
-    private function getTargetDirectory() {
-        $targetDir = Configuration::getConfiguration()->get("upload", "directory");
-        if (Configuration::getConfiguration()->get("upload", "relative")) {
-            return SULUVIR_ROOT_DIR . $targetDir . "/";
-        } else {
-            return $targetDir . "/";
-        }
     }
 
 }
