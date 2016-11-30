@@ -46,7 +46,7 @@ class Uploader {
     public function upload() {
         $targetDir = $this->getTargetDirectory();
         $song = SongManager::createSong();
-        $targetFile = $targetDir . $song->getName();
+        $targetFile = $targetDir . $song->getFileName() . $song->getExtension();
         Logger::getLogger()->info("Uploading {$this->file['name']} to $targetFile");
 
         if (move_uploaded_file($this->file["tmp_name"], $targetFile)) {

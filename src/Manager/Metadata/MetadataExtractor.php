@@ -13,27 +13,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Suluvir\Manager\Media;
+namespace Suluvir\Manager\Metadata;
 
-
-use Suluvir\Schema\Media\Song;
-
-class SongManager {
-
-    /**
-     * @return Song a new song
-     */
-    public static function createSong() {
-        return new Song();
-    }
-
-    /**
-     * Calculates the path the audio file for the song is saved
-     *
-     * @param Song $song the song to get the path for
-     */
-    public static function getAbsolutePath(Song $song) {
-
-    }
+/**
+ * Class MetadataExtractor
+ *
+ * This class extracts all possible metadata from the given song
+ *
+ * @package Suluvir\Manager\Metadata
+ */
+class MetadataExtractor {
 
 }

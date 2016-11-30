@@ -37,7 +37,21 @@ class Song extends DatabaseObject {
      *
      * @var string the name of the file (without directory prefix)
      */
-    private $name;
+    private $fileName;
+
+    /**
+     * @Column(type="string", length=10)
+     *
+     * @var string the file type extension
+     */
+    private $extension;
+
+    /**
+     * @Column(type="integer")
+     *
+     * @var int the file size in byte
+     */
+    private $size;
 
     /**
      * @Column(type="datetime")
@@ -47,15 +61,31 @@ class Song extends DatabaseObject {
     private $creation;
 
     public function __construct() {
-        $this->name = Uuid::uuid4()->toString() . ".mp3";
+        // FIXME calculate file type extension
+        $this->fileName = Uuid::uuid4()->toString();
+        $this->extension = "mp3";
         $this->creation = new \DateTime();
     }
 
     /**
-     * @return string name of the file
+     * @return string
      */
-    public function getName() {
-        return $this->name;
+    public function getFileName() {
+        return $this->fileName;
+    }
+
+    /**
+     * @return string the file extension
+     */
+    public function getExtension() {
+        return $this->extension;
+    }
+
+    /**
+     * @return int the file size
+     */
+    public function getSize() {
+        return $this->size;
     }
 
 }
