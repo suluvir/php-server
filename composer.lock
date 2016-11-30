@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a9cfbd81b47f6f7650a6eefceb660dfc",
-    "content-hash": "88281c3a82109f36ca4972723dd3727b",
+    "hash": "8413d37d227e461aa905c443f1b53866",
+    "content-hash": "cf6e9c21d17c8f1e9f5ece7d8fda0fec",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -213,16 +213,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.6.1",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "a579557bc689580c19fee4e27487a67fe60defc0"
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/a579557bc689580c19fee4e27487a67fe60defc0",
-                "reference": "a579557bc689580c19fee4e27487a67fe60defc0",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
+                "reference": "7bce00698899aa2c06fe7365c76e4d78ddb15fa3",
                 "shasum": ""
             },
             "require": {
@@ -282,7 +282,7 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-25 13:18:31"
+            "time": "2016-11-30 16:50:46"
         },
         {
             "name": "doctrine/dbal",
@@ -1122,16 +1122,16 @@
         },
         {
             "name": "yarf/yarf",
-            "version": "0.0.4",
+            "version": "0.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jannisfink/yarf.git",
-                "reference": "45f5b2b89e1094a00999bb53b227c930b78179d8"
+                "reference": "3bb4bc772fc79aa2208792efe9dfbacd3e1034e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jannisfink/yarf/zipball/45f5b2b89e1094a00999bb53b227c930b78179d8",
-                "reference": "45f5b2b89e1094a00999bb53b227c930b78179d8",
+                "url": "https://api.github.com/repos/jannisfink/yarf/zipball/3bb4bc772fc79aa2208792efe9dfbacd3e1034e3",
+                "reference": "3bb4bc772fc79aa2208792efe9dfbacd3e1034e3",
                 "shasum": ""
             },
             "require": {
@@ -1159,7 +1159,7 @@
                 }
             ],
             "description": "Yet another routing framework",
-            "time": "2016-11-30 14:38:52"
+            "time": "2016-11-30 21:23:46"
         }
     ],
     "packages-dev": [
@@ -2314,25 +2314,31 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v3.1.7",
+            "version": "v3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "9da375317228e54f4ea1b013b30fa47417e84943"
+                "reference": "f2300ba8fbb002c028710b92e1906e7457410693"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/9da375317228e54f4ea1b013b30fa47417e84943",
-                "reference": "9da375317228e54f4ea1b013b30fa47417e84943",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/f2300ba8fbb002c028710b92e1906e7457410693",
+                "reference": "f2300ba8fbb002c028710b92e1906e7457410693",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.9"
             },
+            "require-dev": {
+                "symfony/console": "~2.8|~3.0"
+            },
+            "suggest": {
+                "symfony/console": "For validating YAML files using the lint command"
+            },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.1-dev"
+                    "dev-master": "3.2-dev"
                 }
             },
             "autoload": {
@@ -2359,7 +2365,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2016-11-18 21:05:29"
+            "time": "2016-11-18 21:17:59"
         },
         {
             "name": "webmozart/assert",
