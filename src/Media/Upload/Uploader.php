@@ -18,6 +18,9 @@ namespace Suluvir\Media\Upload;
 
 use Suluvir\Config\Configuration;
 use Suluvir\Log\Logger;
+use Suluvir\Manager\Media\SongManager;
+use Suluvir\Schema\EntityManager;
+use Suluvir\Schema\Media\Song;
 
 class Uploader {
 
@@ -36,13 +39,24 @@ class Uploader {
 
     /**
      * Uploads the file given in constructor to a directory specified in the config
+     *
+     * @return Song the uploaded song
+     * @throws \RuntimeException if the song cannot be uploaded
      */
     public function upload() {
         $targetDir = $this->getTargetDirectory();
-        $targetFile = $targetDir . "test.mp3";
-        Logger::getLogger()->info("Uploading {$this->file['name']} to $targetDir");
+        $song = SongManager::createSong();
+        $targetFile = $targetDir . $song->getName();
+        Logger::getLogger()->info("Uploading {$this->file['name']} to $targetFile");
 
-        move_uploaded_file($this->file["tmp_name"], $targetFile);
+        if (move_uploaded_file($this->file["tmp_name"], $targetFile)) {
+            EntityManager::getEntityManager()->persist($song);
+            EntityManager::getEntityManager()->flush();
+        } else {
+            throw new \RuntimeException("can't upload song");
+        }
+
+        return $song;
     }
 
     private function getTargetDirectory() {

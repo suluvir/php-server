@@ -13,17 +13,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/vendor/autoload.php";
+namespace Suluvir\Manager\Media;
 
-define("SULUVIR_ROOT_DIR", __DIR__ . "/");
 
-$configFile = __DIR__ . SULUVIR_CONFIG_FILE;
-if (!file_exists($configFile)) {
-    $configFile = __DIR__ . SULUVIR_FALLBACK_CONFIG_FILE;
+use Suluvir\Schema\Media\Song;
+
+class SongManager {
+
+    /**
+     * @return Song a new song
+     */
+    public static function createSong() {
+        return new Song();
+    }
+
 }
-
-\Suluvir\Config\Configuration::loadConfiguration($configFile);
-
-require_once SULUVIR_ROOT_DIR . "bootstrapDoctrine.php";
-
-\Suluvir\Schema\EntityManager::getEntityManager()->flush();

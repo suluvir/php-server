@@ -13,17 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/vendor/autoload.php";
+namespace Suluvir\Schema;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Id;
+use Doctrine\ORM\Mapping\MappedSuperclass;
 
-define("SULUVIR_ROOT_DIR", __DIR__ . "/");
 
-$configFile = __DIR__ . SULUVIR_CONFIG_FILE;
-if (!file_exists($configFile)) {
-    $configFile = __DIR__ . SULUVIR_FALLBACK_CONFIG_FILE;
+/**
+ * Class DatabaseObject
+ *
+ * @MappedSuperclass
+ */
+class DatabaseObject {
+
+    /**
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue
+     *
+     * @var int the primary key
+     */
+    protected $id;
+
 }
-
-\Suluvir\Config\Configuration::loadConfiguration($configFile);
-
-require_once SULUVIR_ROOT_DIR . "bootstrapDoctrine.php";
-
-\Suluvir\Schema\EntityManager::getEntityManager()->flush();

@@ -26,7 +26,8 @@
         "yarf/yarf": "^0.0.4",
         "fink/config": "^1.0",
         "monolog/monolog": "^1.0",
-        "doctrine/orm": "^2.5"
+        "doctrine/orm": "^2.5",
+        "ramsey/uuid": "^3.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^5.6"
