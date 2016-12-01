@@ -17,7 +17,12 @@ $pageMap = [
     "" => \Suluvir\Page\Index::class,
 
     "api" => [
-        "song" => \Suluvir\Page\Api\Song::class
+        "v1" => [
+            "song" => [
+                "" => \Suluvir\Page\Api\Song::class,
+                "{songId}" => \Suluvir\Page\Api\Song::class
+            ]
+        ]
     ],
 
     "upload" => \Suluvir\Page\Upload::class
