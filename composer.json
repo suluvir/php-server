@@ -18,7 +18,9 @@
     },
 
     "scripts": {
-        "test": "phpunit -c phpunit.xml"
+        "test": "phpunit -c phpunit.xml",
+        "create-db": "doctrine orm:schema-tool:create",
+        "update-db": "doctrine orm:schema-tool: update --force --dump-sql"
     },
 
     "require": {
