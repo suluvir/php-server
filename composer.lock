@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8413d37d227e461aa905c443f1b53866",
-    "content-hash": "cf6e9c21d17c8f1e9f5ece7d8fda0fec",
+    "hash": "c2fa02c8455f654737a58f7c12a6c5eb",
+    "content-hash": "a836a8d1139d9e9a45247dfde9e5e9b2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1122,16 +1122,16 @@
         },
         {
             "name": "yarf/yarf",
-            "version": "0.0.5",
+            "version": "0.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jannisfink/yarf.git",
-                "reference": "3bb4bc772fc79aa2208792efe9dfbacd3e1034e3"
+                "reference": "edfc1398bc0f6b40596bcb1c47ed3e56e93ab941"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jannisfink/yarf/zipball/3bb4bc772fc79aa2208792efe9dfbacd3e1034e3",
-                "reference": "3bb4bc772fc79aa2208792efe9dfbacd3e1034e3",
+                "url": "https://api.github.com/repos/jannisfink/yarf/zipball/edfc1398bc0f6b40596bcb1c47ed3e56e93ab941",
+                "reference": "edfc1398bc0f6b40596bcb1c47ed3e56e93ab941",
                 "shasum": ""
             },
             "require": {
@@ -1159,7 +1159,7 @@
                 }
             ],
             "description": "Yet another routing framework",
-            "time": "2016-11-30 21:23:46"
+            "time": "2016-12-01 17:44:13"
         }
     ],
     "packages-dev": [
