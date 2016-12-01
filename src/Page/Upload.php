@@ -44,6 +44,7 @@ class Upload extends HtmlPage {
         try {
             $uploader->upload();
         } catch (\RuntimeException $e) {
+            Logger::getLogger()->error($e->getMessage(), $e->getTrace());
             throw new HttpInternalServerError($e->getMessage());
         }
 

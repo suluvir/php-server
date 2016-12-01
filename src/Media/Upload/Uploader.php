@@ -25,7 +25,7 @@ use Suluvir\Schema\Media\Song;
 class Uploader {
 
     /**
-     * @var string
+     * @var array
      */
     private $file;
 
@@ -44,9 +44,13 @@ class Uploader {
      * @throws \RuntimeException if the song cannot be uploaded
      */
     public function upload() {
+        $logger = Logger::getLogger();
+        if ($this->file["error"] == UPLOAD_ERR_FORM_SIZE || $this->file["error"] == UPLOAD_ERR_INI_SIZE) {
+            $logger->critical("File size of uploaded song exceeds limit configured", $this->file);
+        }
         $song = SongManager::createSong($this->file["name"]);
         $targetFile = SongManager::getAbsolutePath($song);
-        Logger::getLogger()->info("Uploading {$this->file['name']} to $targetFile");
+        Logger::getLogger()->info("Uploading {$this->file['name']} to $targetFile", $this->file);
 
         if (move_uploaded_file($this->file["tmp_name"], $targetFile)) {
             $song = SongManager::popularizeMetadata($song);
