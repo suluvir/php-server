@@ -15,6 +15,8 @@
 
 require_once __DIR__ . "/vendor/autoload.php";
 
+mb_internal_encoding(SULUVIR_ENCODING);
+
 define("SULUVIR_ROOT_DIR", __DIR__ . "/");
 
 $configFile = __DIR__ . SULUVIR_CONFIG_FILE;

@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+define("SULUVIR_ENCODING", "UTF8");
+
 define("SULUVIR_DEFAULT_LOGGER", "SULUVIR_DEFAULT_LOGGER");
 
 define("SULUVIR_CONFIG_FILE", "/suluvir.ini");

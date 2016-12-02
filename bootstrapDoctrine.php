@@ -24,7 +24,8 @@ $dbConnection = [
     "host" => $config->get("database", "host"),
     "user" => $config->get("database", "user"),
     "password" => $config->get("database", "password"),
-    "dbname" => $config->get("database", "name")
+    "dbname" => $config->get("database", "name"),
+    "charset" => SULUVIR_ENCODING
 ];
 
 $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($paths, $devMode);
