@@ -19,8 +19,8 @@ $pageMap = [
     "api" => [
         "v1" => [
             "song" => [
-                "" => \Suluvir\Page\Api\Song::class,
-                "{songId}" => \Suluvir\Page\Api\Song::class
+                "" => \Suluvir\Page\Api\Songs::class,
+                "{songId}" => \Suluvir\Page\Api\Songs::class
             ]
         ]
     ],
