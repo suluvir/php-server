@@ -18,7 +18,7 @@ namespace Suluvir\Log;
 
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LoggerInterface;
-use Suluvir\Config\Configuration;
+use Suluvir\Config\SuluvirConfig;
 
 class Logger {
 
@@ -59,8 +59,8 @@ class Logger {
         }
 
         $logger = new \Monolog\Logger($name);
-        $loggingDirectory = Configuration::getConfiguration()->get("log", "directory");
-        $fileType = Configuration::getConfiguration()->get("log", "file_type");
+        $loggingDirectory = SuluvirConfig::getConfiguration()->get("log", "directory");
+        $fileType = SuluvirConfig::getConfiguration()->get("log", "file_type");
 
         $fileName = SULUVIR_ROOT_DIR . $loggingDirectory . strtolower($name) . $fileType;
 

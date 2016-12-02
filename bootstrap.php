@@ -22,6 +22,6 @@ if (!file_exists($configFile)) {
     $configFile = __DIR__ . SULUVIR_FALLBACK_CONFIG_FILE;
 }
 
-\Suluvir\Config\Configuration::loadConfiguration($configFile);
+\Suluvir\Config\SuluvirConfig::loadConfiguration($configFile);
 
 require_once SULUVIR_ROOT_DIR . "bootstrapDoctrine.php";

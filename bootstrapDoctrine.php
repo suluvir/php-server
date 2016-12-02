@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-$config = \Suluvir\Config\Configuration::getConfiguration();
+$config = \Suluvir\Config\SuluvirConfig::getConfiguration();
 $logger = \Suluvir\Log\Logger::getLogger();
 $devMode = $config->get("development");
 

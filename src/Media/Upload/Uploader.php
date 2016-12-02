@@ -16,7 +16,7 @@
 namespace Suluvir\Media\Upload;
 
 
-use Suluvir\Config\Configuration;
+use Suluvir\Config\SuluvirConfig;
 use Suluvir\Log\Logger;
 use Suluvir\Manager\Media\SongManager;
 use Suluvir\Schema\EntityManager;

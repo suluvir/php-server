@@ -19,7 +19,7 @@ namespace Suluvir\Config;
 class ConfigurationTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetConfig() {
-        $config = Configuration::getConfiguration();
+        $config = SuluvirConfig::getConfiguration();
         $this->assertInstanceOf(\Fink\config\Configuration::class, $config);
     }
 

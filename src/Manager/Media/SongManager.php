@@ -16,7 +16,7 @@
 namespace Suluvir\Manager\Media;
 
 
-use Suluvir\Config\Configuration;
+use Suluvir\Config\SuluvirConfig;
 use Suluvir\Manager\Metadata\SongMetadataExtractor;
 use Suluvir\Schema\Media\Song;
 
@@ -37,7 +37,7 @@ class SongManager {
      * @return string the absolute file name for the given songs audio file
      */
     public static function getAbsolutePath(Song $song) {
-        $config = Configuration::getConfiguration();
+        $config = SuluvirConfig::getConfiguration();
         $directory = $config->get("upload", "directory");
         if ($config->get("upload", "relative")) {
             $directory = SULUVIR_ROOT_DIR . $directory;

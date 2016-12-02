@@ -16,9 +16,10 @@
 namespace Suluvir\Config;
 
 
+use Fink\config\Configuration;
 use Suluvir\Log\Logger;
 
-class Configuration {
+class SuluvirConfig {
 
     private static $configuration;
 
@@ -37,9 +38,9 @@ class Configuration {
      * @param $configurationFile string the file name of the configuration file to use
      */
     public static function loadConfiguration($configurationFile) {
-        self::$configuration = new \Fink\config\Configuration($configurationFile);
+        self::$configuration = new Configuration($configurationFile);
 
-        Logger::getLogger()->debug("loaded configuration: " . var_export(self::$configuration->get(), true));
+        Logger::getLogger()->debug("loaded configuration", self::$configuration->get());
     }
 
 }
