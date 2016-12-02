@@ -16,7 +16,9 @@
 namespace Suluvir\Config;
 
 
-class ConfigurationTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class ConfigurationTest extends TestCase  {
 
     public function testGetConfig() {
         $config = SuluvirConfig::getConfiguration();
