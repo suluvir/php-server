@@ -23,6 +23,8 @@
 namespace Suluvir\Manager\Media;
 
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
 use Suluvir\Schema\Media\Artist;
 
@@ -32,6 +34,37 @@ class ArtistManagerTest extends TestCase {
         $artist = ArtistManager::createArtist("test");
         $this->assertInstanceOf(Artist::class, $artist);
         $this->assertEquals("test", $artist->getName());
+    }
+
+    public function testGetArtistByNameNull() {
+        $this->assertNull(ArtistManager::getArtistByName(null));
+    }
+
+    public function testGetArtistByNameEmptyString() {
+        $this->assertNull(ArtistManager::getArtistByName(""));
+    }
+
+    public function testGetArtistFromDb() {
+        $em = $this->createMock(EntityManager::class);
+        $repo = $this->createMock(EntityRepository::class);
+        $artist = ArtistManager::createArtist("test");
+        $repo->method("findOneBy")->willReturn($artist);
+        $em->method("getRepository")->willReturn($repo);
+
+        $result = ArtistManager::getArtistByName("test", $em);
+        $this->assertEquals($artist, $result);
+        $this->assertEquals($artist->getName(), $result->getName());
+    }
+
+    public function testGetArtistCreateNew() {
+        $em = $this->createMock(EntityManager::class);
+        $repo = $this->createMock(EntityRepository::class);
+        $repo->method("findOneBy")->willReturn(null);
+        $em->method("getRepository")->willReturn($repo);
+
+        $result = ArtistManager::getArtistByName("test");
+        $this->assertInstanceOf(Artist::class, $result);
+        $this->assertEquals("test", $result->getName());
     }
 
 }

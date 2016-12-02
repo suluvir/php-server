@@ -16,6 +16,7 @@
 namespace Suluvir\Manager\Media;
 
 
+use Doctrine\ORM\EntityManager;
 use Suluvir\Schema\DatabaseManager;
 use Suluvir\Schema\Media\Artist;
 
@@ -33,14 +34,20 @@ class ArtistManager {
 
     /**
      * Gets an existing artist from database or creates a new one, if there is no one present in the
-     * database, yet.
+     * database, yet. If {@code null} or an empty string is given for the name, null will be returned
      *
      * @param string $name the name of the artist
-     * @return Artist an existing artist in the database or a new one, if it does not exist right now
+     * @param EntityManager $entityManager the doctrine entity manager to use
+     * @return Artist|null an existing artist in the database or a new one, if it does not exist right now
      */
-    public static function getArtistByName($name) {
-        $em = DatabaseManager::getEntityManager();
-        $dbArtist = $em->getRepository(Artist::class)->findOneBy(["name" => $name]);
+    public static function getArtistByName($name, EntityManager $entityManager = null) {
+        if ($name === null || $name === "") {
+            return null;
+        }
+        if ($entityManager === null) {
+            $entityManager = DatabaseManager::getEntityManager();
+        }
+        $dbArtist = $entityManager->getRepository(Artist::class)->findOneBy(["name" => $name]);
         return $dbArtist !== null ? $dbArtist : static::createArtist($name);
     }
 

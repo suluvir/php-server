@@ -96,7 +96,10 @@ class SongMetadataExtractor {
         $artists = [];
 
         foreach ($artistNames as $artistName) {
-            $artists[] = ArtistManager::getArtistByName($artistName);
+            $artist = ArtistManager::getArtistByName($artistName);
+            if ($artist !== null) {
+                $artists[] = $artist;
+            }
         }
 
         return $artists;
