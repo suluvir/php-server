@@ -16,6 +16,7 @@
 namespace Suluvir\Manager\Media;
 
 
+use Fink\config\Configuration;
 use Suluvir\Config\SuluvirConfig;
 use Suluvir\Manager\Metadata\SongMetadataExtractor;
 use Suluvir\Schema\Media\Song;
@@ -34,10 +35,13 @@ class SongManager {
      * Calculates the path the audio file for the song is saved
      *
      * @param Song $song the song to get the path for
+     * @param Configuration $config the configuration to use
      * @return string the absolute file name for the given songs audio file
      */
-    public static function getAbsolutePath(Song $song) {
-        $config = SuluvirConfig::getConfiguration();
+    public static function getAbsolutePath(Song $song, Configuration $config = null) {
+        if ($config === null) {
+            $config = SuluvirConfig::getConfiguration();
+        }
         $directory = $config->get("upload", "directory");
         if ($config->get("upload", "relative")) {
             $directory = SULUVIR_ROOT_DIR . $directory;
