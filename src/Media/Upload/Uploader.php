@@ -19,7 +19,7 @@ namespace Suluvir\Media\Upload;
 use Suluvir\Config\SuluvirConfig;
 use Suluvir\Log\Logger;
 use Suluvir\Manager\Media\SongManager;
-use Suluvir\Schema\EntityManager;
+use Suluvir\Schema\DatabaseManager;
 use Suluvir\Schema\Media\Song;
 
 class Uploader {
@@ -55,9 +55,9 @@ class Uploader {
         if (move_uploaded_file($this->file["tmp_name"], $targetFile)) {
             $song = SongManager::popularizeMetadata($song);
             foreach ($song->getArtists() as $artist) {
-                EntityManager::getEntityManager()->persist($artist);
+                DatabaseManager::getEntityManager()->persist($artist);
             }
-            EntityManager::getEntityManager()->persist($song);
+            DatabaseManager::getEntityManager()->persist($song);
         } else {
             throw new \RuntimeException("can't upload song");
         }

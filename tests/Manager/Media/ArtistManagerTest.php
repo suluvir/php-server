@@ -13,6 +13,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-require_once __DIR__ . "/bootstrap.php";
+/**
+ * Created by PhpStorm.
+ * User: jannis
+ * Date: 02.12.16
+ * Time: 12:17
+ */
 
-return \Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet(\Suluvir\Schema\DatabaseManager::getEntityManager());
+namespace Suluvir\Manager\Media;
+
+
+use PHPUnit\Framework\TestCase;
+use Suluvir\Schema\Media\Artist;
+
+class ArtistManagerTest extends TestCase {
+
+    public function testCreateArtist() {
+        $artist = ArtistManager::createArtist("test");
+        $this->assertInstanceOf(Artist::class, $artist);
+        $this->assertEquals("test", $artist->getName());
+    }
+
+}

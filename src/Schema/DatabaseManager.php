@@ -16,14 +16,16 @@
 namespace Suluvir\Schema;
 
 
-class EntityManager {
+use Doctrine\ORM\EntityManager;
+
+class DatabaseManager {
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private static $entityManager;
 
-    public static function setEntityManager(\Doctrine\ORM\EntityManager $entityManager) {
+    public static function setEntityManager(EntityManager $entityManager) {
         if (static::$entityManager !== null) {
             throw new \RuntimeException("EntityManager can only be set once");
         }
@@ -31,7 +33,7 @@ class EntityManager {
     }
 
     /**
-     * @return \Doctrine\ORM\EntityManager
+     * @return EntityManager
      */
     public static function getEntityManager() {
         return static::$entityManager;

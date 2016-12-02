@@ -31,5 +31,5 @@ $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration($path
 
 $logger->info("Create doctrine entity manager");
 $entityManager = \Doctrine\ORM\EntityManager::create($dbConnection, $config);
-\Suluvir\Schema\EntityManager::setEntityManager($entityManager);
+\Suluvir\Schema\DatabaseManager::setEntityManager($entityManager);
 $logger->info("Created doctrine entity manager");

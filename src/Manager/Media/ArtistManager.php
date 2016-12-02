@@ -16,7 +16,7 @@
 namespace Suluvir\Manager\Media;
 
 
-use Suluvir\Schema\EntityManager;
+use Suluvir\Schema\DatabaseManager;
 use Suluvir\Schema\Media\Artist;
 
 class ArtistManager {
@@ -39,7 +39,7 @@ class ArtistManager {
      * @return Artist an existing artist in the database or a new one, if it does not exist right now
      */
     public static function getArtistByName($name) {
-        $em = EntityManager::getEntityManager();
+        $em = DatabaseManager::getEntityManager();
         $dbArtist = $em->getRepository(Artist::class)->findOneBy(["name" => $name]);
         return $dbArtist !== null ? $dbArtist : static::createArtist($name);
     }

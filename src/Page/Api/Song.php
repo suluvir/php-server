@@ -17,7 +17,7 @@ namespace Suluvir\Page\Api;
 
 
 use Suluvir\Log\Logger;
-use Suluvir\Schema\EntityManager;
+use Suluvir\Schema\DatabaseManager;
 use Yarf\page\JsonPage;
 use Yarf\request\Request;
 use Yarf\response\Response;
@@ -25,7 +25,7 @@ use Yarf\response\Response;
 class Song extends JsonPage {
 
     public function get(Request $request, Response $response, $songId) {
-        $entityManager = EntityManager::getEntityManager();
+        $entityManager = DatabaseManager::getEntityManager();
 
         if ($songId === null) {
             $songs = $entityManager->getRepository(\Suluvir\Schema\Media\Song::class)->findAll();
