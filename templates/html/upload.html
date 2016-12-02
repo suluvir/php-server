@@ -20,11 +20,13 @@
 </head>
 <body>
 
-<form action="/upload" method="post" enctype="multipart/form-data">
-    Select image to upload:
-    <input type="file" name="media" id="media">
-    <input type="submit" value="Upload Song" name="submit">
+<form action="/upload"
+    class="dropzone"
+    id="media-upload">
 </form>
+
+<script src="/static/vendor/dropzone.js"></script>
+<script src="/static/upload.js"></script>
 
 </body>
 </html>
