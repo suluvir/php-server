@@ -19,6 +19,7 @@ namespace Suluvir\Page\Api;
 use Suluvir\Log\Logger;
 use Suluvir\Schema\DatabaseManager;
 use Yarf\exc\web\HttpBadRequest;
+use Yarf\exc\web\HttpNotFound;
 use Yarf\page\JsonPage;
 use Yarf\request\Request;
 use Yarf\response\Response;
@@ -36,6 +37,9 @@ class Song extends JsonPage {
                 $songs = $entityManager->getRepository(\Suluvir\Schema\Media\Song::class)->find($songId);
             } else {
                 throw new HttpBadRequest("song id has to be numeric");
+            }
+            if ($songs === null) {
+                throw new HttpNotFound();
             }
         }
 
