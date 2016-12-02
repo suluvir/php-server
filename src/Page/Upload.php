@@ -16,11 +16,7 @@
 namespace Suluvir\Page;
 
 
-use Suluvir\Log\Logger;
-use Suluvir\Media\Upload\Uploader;
-use Yarf\exc\web\HttpInternalServerError;
 use Yarf\page\HtmlPage;
-use Yarf\request\Request;
 use Yarf\response\Response;
 
 /**
@@ -36,19 +32,6 @@ class Upload extends HtmlPage {
         $fileContents = file_get_contents(SULUVIR_ROOT_DIR . "templates/html/upload.html");
         $response->result($fileContents);
         return $response;
-    }
-
-    public function post(Request $request, Response $response) {
-        $uploader = new Uploader($request->get("media"));
-
-        try {
-            $uploader->upload();
-        } catch (\RuntimeException $e) {
-            Logger::getLogger()->error($e->getMessage(), $e->getTrace());
-            throw new HttpInternalServerError($e->getMessage());
-        }
-
-        return $this->get($response);
     }
 
 }

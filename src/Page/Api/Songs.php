@@ -17,10 +17,13 @@ namespace Suluvir\Page\Api;
 
 
 use Suluvir\Log\Logger;
+use Suluvir\Media\Upload\Uploader;
 use Suluvir\Schema\DatabaseManager;
 use Suluvir\Schema\Media\Song;
 use Yarf\exc\web\HttpBadRequest;
+use Yarf\exc\web\HttpInternalServerError;
 use Yarf\exc\web\HttpNotFound;
+use Yarf\http\Header;
 use Yarf\page\JsonPage;
 use Yarf\request\Request;
 use Yarf\response\Response;
@@ -45,6 +48,20 @@ class Songs extends JsonPage {
         }
 
         $response->result($songs);
+        return $response;
+    }
+
+    public function post(Request $request, Response $response) {
+        $uploader = new Uploader($request->get("media"));
+
+        try {
+            $song = $uploader->upload();
+        } catch (\RuntimeException $e) {
+            Logger::getLogger()->error($e->getMessage(), $e->getTrace());
+            throw new HttpInternalServerError($e->getMessage());
+        }
+
+        $response->result($song);
         return $response;
     }
 
