@@ -54,6 +54,9 @@ class Uploader {
 
         if (move_uploaded_file($this->file["tmp_name"], $targetFile)) {
             $song = SongManager::popularizeMetadata($song);
+            foreach ($song->getArtists() as $artist) {
+                EntityManager::getEntityManager()->persist($artist);
+            }
             EntityManager::getEntityManager()->persist($song);
         } else {
             throw new \RuntimeException("can't upload song");

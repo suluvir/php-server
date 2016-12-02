@@ -18,6 +18,8 @@ namespace Suluvir\Schema\Media;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\JoinTable;
+use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\Table;
 use Ramsey\Uuid\Uuid;
 use Suluvir\Schema\DatabaseObject;
@@ -31,6 +33,14 @@ use Suluvir\Schema\DatabaseObject;
  * @package Suluvir\Schema\Media
  */
 class Song extends DatabaseObject {
+
+    /**
+     * @ManyToMany(targetEntity="Suluvir\Schema\Media\Artist", inversedBy="songs")
+     * @JoinTable(name="media_song_artist")
+     *
+     * @var Artist[] the songs artists
+     */
+    private $artists;
 
     /**
      * @Column(type="string", length=50)
@@ -59,6 +69,13 @@ class Song extends DatabaseObject {
      * @var string the songs title
      */
     private $title;
+
+    /**
+     * @Column(type="float", nullable=true)
+     *
+     * @var double duration of the song, in seconds
+     */
+    private $duration;
 
     /**
      * @Column(type="datetime")
@@ -102,6 +119,13 @@ class Song extends DatabaseObject {
     }
 
     /**
+     * @return double the songs duration, in seconds
+     */
+    public function getDuration() {
+        return $this->duration;
+    }
+
+    /**
      * @param string $title the new title
      */
     public function setTitle($title) {
@@ -113,6 +137,27 @@ class Song extends DatabaseObject {
      */
     public function setSize($size) {
         $this->size = $size;
+    }
+
+    /**
+     * @param double $duration
+     */
+    public function setDuration($duration) {
+        $this->duration = $duration;
+    }
+
+    /**
+     * @param Artist[] $artists the new artists
+     */
+    public function setArtists($artists) {
+        $this->artists = $artists;
+    }
+
+    /**
+     * @return Artist[]
+     */
+    public function getArtists() {
+        return $this->artists;
     }
 
 }

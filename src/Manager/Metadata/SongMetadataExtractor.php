@@ -15,7 +15,9 @@
 
 namespace Suluvir\Manager\Metadata;
 use Suluvir\Log\Logger;
+use Suluvir\Manager\Media\ArtistManager;
 use Suluvir\Manager\Media\SongManager;
+use Suluvir\Schema\Media\Artist;
 use Suluvir\Schema\Media\Song;
 
 /**
@@ -75,6 +77,29 @@ class SongMetadataExtractor {
      */
     public function getSize() {
         return filesize(SongManager::getAbsolutePath($this->song));
+    }
+
+    /**
+     * @return double the songs duration
+     */
+    public function getDuration() {
+        $this->analyze();
+        return $this->fileInfo["playtime_seconds"];
+    }
+
+    /**
+     * @return Artist[] all artists of this song
+     */
+    public function getArtists() {
+        $this->analyze();
+        $artistNames = $this->fileInfo["tags"]["id3v1"]["artist"];
+        $artists = [];
+
+        foreach ($artistNames as $artistName) {
+            $artists[] = ArtistManager::getArtistByName($artistName);
+        }
+
+        return $artists;
     }
 
 }
