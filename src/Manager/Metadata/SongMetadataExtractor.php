@@ -114,7 +114,7 @@ class SongMetadataExtractor {
         $result = [];
 
         foreach ($artistNames as $artistName) {
-            $explodedArtistNames = preg_split("/,|feat\.?/", $artistName);
+            $explodedArtistNames = preg_split("/,|feat\.?|ft\./", $artistName);
             foreach ($explodedArtistNames as $explodedArtistName) {
                 $result[] = trim($explodedArtistName);
             }

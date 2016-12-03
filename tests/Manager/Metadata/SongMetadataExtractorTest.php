@@ -219,4 +219,40 @@ class SongMetadataExtractorTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals("tut", $artist->getName());
     }
 
+    public function testGetFeatSeparatedArtistsWithoutWhiteSpaceFtDotted() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["testft.tut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetFeatSeparatedArtistsWithWhiteSpaceFtDotted() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => [" test ft. tut "]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
 }
