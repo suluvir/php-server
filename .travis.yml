@@ -4,13 +4,10 @@ php:
     - '7.0'
     - hhvm
     - nightly
-    - hhvm-nightly
 
 matrix:
     allow_failures:
-        - php:
-            - nightly
-            - hhvm-nightly
+        - php: nightly
 
 services:
     - mysql
