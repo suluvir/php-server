@@ -18,6 +18,8 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Suluvir\Config\SuluvirConfig;
+use Suluvir\Linker\EntityLinker;
 
 
 /**
@@ -36,24 +38,52 @@ abstract class DatabaseObject implements \JsonSerializable {
      */
     protected $id;
 
-    public function jsonSerialize() {
+    /**
+     * @return int the primary key of this object
+     */
+    public function getId() {
+        return $this->id;
+    }
+
+    /**
+     * Serializes this object for json. When the {@code $serializeRelationShips} flag is set to {@code true},
+     * this method will return all relationship data. When set to {@code false}, it will return just the link
+     * to this objects information, instead.
+     *
+     * @param bool $serializeRelationShips when set to true, this method will return all relationship data
+     * @return array the json serialized data
+     */
+    private function jsonSerializeHelper($serializeRelationShips = true) {
         $result = [];
         $reflectionObject = new \ReflectionObject($this);
 
         foreach ($reflectionObject->getProperties() as $property) {
             $accessible = $property->isPrivate() || $property->isProtected();
             $property->setAccessible(true);
-            $result[$property->getName()] = $this->serializeDatetime($property->getValue($this));
+            $value =  $property->getValue($this);
+            $value = $this->serializeValue($value);
+            $result[$property->getName()] = $value;
             $property->setAccessible($accessible);
         }
+        $result = $this->addJsonLdKeys($result);
         return $result;
     }
 
-    private function serializeDatetime($value) {
+    public function jsonSerialize() {
+        return $this->jsonSerializeHelper();
+    }
+
+    private function serializeValue($value) {
         if ($value instanceof \DateTime) {
             return $value->format(DATE_ISO8601);
         }
         return $value;
+    }
+
+    private function addJsonLdKeys(array $serialized) {
+        $linker = new EntityLinker();
+        $serialized["@id"] = $linker->link($this);
+        return $serialized;
     }
 
 }
