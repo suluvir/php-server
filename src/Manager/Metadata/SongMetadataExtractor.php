@@ -49,8 +49,8 @@ class SongMetadataExtractor {
      */
     private $analyzed;
 
-    public function __construct(Song $song) {
-        $this->getId3 = new \getID3();
+    public function __construct(Song $song, \getID3 $getID3 = null) {
+        $this->getId3 = $getID3 === null ? new \getID3() : $getID3;
         $this->song = $song;
     }
 
