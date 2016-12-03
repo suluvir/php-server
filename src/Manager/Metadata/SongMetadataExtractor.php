@@ -93,7 +93,7 @@ class SongMetadataExtractor {
      */
     public function getArtists() {
         $this->analyze();
-        $artistNames = $this->fileInfo["tags"]["id3v1"]["artist"];
+        $artistNames = $this->extractArtistNames($this->fileInfo["tags"]["id3v1"]["artist"]);
         $artists = [];
 
         foreach ($artistNames as $artistName) {
@@ -104,6 +104,23 @@ class SongMetadataExtractor {
         }
 
         return $artists;
+    }
+
+    /**
+     * @param array $artistNames
+     * @return array the extracted artist names
+     */
+    private function extractArtistNames(array $artistNames) {
+        $result = [];
+
+        foreach ($artistNames as $artistName) {
+            $explodedArtistNames = preg_split("/,|feat\.?/", $artistName);
+            foreach ($explodedArtistNames as $explodedArtistName) {
+                $result[] = trim($explodedArtistName);
+            }
+        }
+
+        return $result;
     }
 
 }

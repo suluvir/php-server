@@ -33,10 +33,18 @@ class SongMetadataExtractorTest extends \PHPUnit_Framework_TestCase {
             "filesize" => 1234,
             "playtime_seconds" => 34.23
         ];
+        $this->extractor = $this->setupExtractor($fileInfo);
+    }
+
+    /**
+     * @param array $fileInfo
+     * @return SongMetadataExtractor
+     */
+    private function setupExtractor(array $fileInfo) {
         $id3 = $this->createMock(\getID3::class);
         $id3->method("analyze")->willReturn($fileInfo);
         $song = $this->createMock(Song::class);
-        $this->extractor = new SongMetadataExtractor($song, $id3);
+        return new SongMetadataExtractor($song, $id3);
     }
 
     public function testGetTitle() {
@@ -49,6 +57,166 @@ class SongMetadataExtractorTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetDuration() {
         $this->assertEquals(34.23, $this->extractor->getDuration());
+    }
+
+    public function testGetBasicArtists() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["test"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(1, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+    }
+
+    public function testGetMultipleArtists() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["test", "tut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetCommaSeparatedArtistsWithoutWhiteSpace() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["test,tut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetCommaSeparatedArtistsWithOneWhiteSpace() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["test, tut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetCommaSeparatedArtistsWithMoreWhiteSpace() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => [" test ,  tut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetFeatSeparatedArtistsWithoutWhiteSpace() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["testfeattut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetFeatSeparatedArtistsWithoutWhiteSpaceFeatDotted() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => ["testfeat.tut"]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetFeatSeparatedArtistsWithWhiteSpace() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => [" test feat tut "]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
+    }
+
+    public function testGetFeatSeparatedArtistsWithWhiteSpaceFeatDotted() {
+        $fileInfo = [
+            "tags" => [
+                "id3v1" => [
+                    "artist" => [" test feat. tut "]
+                ]
+            ]
+        ];
+        $extractor = $this->setupExtractor($fileInfo);
+        $artists = $extractor->getArtists();
+
+        $this->assertEquals(2, count($artists));
+        $artist = $artists[0];
+        $this->assertEquals("test", $artist->getName());
+        $artist = $artists[1];
+        $this->assertEquals("tut", $artist->getName());
     }
 
 }
