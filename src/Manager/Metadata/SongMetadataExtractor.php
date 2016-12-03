@@ -76,7 +76,8 @@ class SongMetadataExtractor {
      * @return int the size in bytes
      */
     public function getSize() {
-        return filesize(SongManager::getAbsolutePath($this->song));
+        $this->analyze();
+        return $this->fileInfo["filesize"];
     }
 
     /**
