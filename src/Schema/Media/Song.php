@@ -18,8 +18,10 @@ namespace Suluvir\Schema\Media;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\JoinTable;
 use Doctrine\ORM\Mapping\ManyToMany;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Ramsey\Uuid\Uuid;
 use Suluvir\Schema\DatabaseObject;
@@ -43,6 +45,14 @@ class Song extends DatabaseObject {
      * @var Artist[] the songs artists
      */
     private $artists;
+
+    /**
+     * @ManyToOne(targetEntity="Suluvir\Schema\Media\Album", fetch="LAZY", inversedBy="songs")
+     * @JoinColumn(name="album_id", referencedColumnName="id")
+     *
+     * @var Album the songs album
+     */
+    private $album;
 
     /**
      * @Column(type="string", length=50)
