@@ -34,6 +34,8 @@ use Suluvir\Schema\DatabaseObject;
  */
 class Artist extends DatabaseObject {
 
+    protected static $skipDeeplySerializeProperties = ["songs"];
+
     /**
      * @ManyToMany(targetEntity="Suluvir\Schema\Media\Song", mappedBy="artists")
      *

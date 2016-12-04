@@ -18,6 +18,7 @@ use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\MappedSuperclass;
+use Doctrine\ORM\PersistentCollection;
 use Suluvir\Config\SuluvirConfig;
 use Suluvir\Linker\EntityLinker;
 
@@ -28,6 +29,13 @@ use Suluvir\Linker\EntityLinker;
  * @MappedSuperclass
  */
 abstract class DatabaseObject implements \JsonSerializable {
+
+    /**
+     * An array containing the properties to skip serializing deeply.
+     *
+     * @var array properties to skip serializing
+     */
+    protected static $skipDeeplySerializeProperties = [];
 
     /**
      * @Id
@@ -58,6 +66,13 @@ abstract class DatabaseObject implements \JsonSerializable {
         $reflectionObject = new \ReflectionObject($this);
 
         foreach ($reflectionObject->getProperties() as $property) {
+            if ($property->isStatic()) {
+                continue;
+            }
+            if (in_array($property->getName(), static::$skipDeeplySerializeProperties) && !$serializeRelationShips) {
+                // don't serialize complex types to avoid circular relationships being serialized
+                continue;
+            }
             $accessible = $property->isPrivate() || $property->isProtected();
             $property->setAccessible(true);
             $value =  $property->getValue($this);
@@ -77,7 +92,23 @@ abstract class DatabaseObject implements \JsonSerializable {
         if ($value instanceof \DateTime) {
             return $value->format(DATE_ISO8601);
         }
+        if (!$this->isPrimitiveType($value)) {
+            if ($value instanceof DatabaseObject) {
+                return $value->jsonSerializeHelper(false);
+            }
+            if ($value instanceof PersistentCollection) {
+                $result = [];
+                foreach ($value as $v) {
+                    $result[] = $v->jsonSerializeHelper(false);
+                }
+                return $result;
+            }
+        }
         return $value;
+    }
+
+    private function isPrimitiveType($value) {
+        return is_string($value) || is_numeric($value) || is_bool($value) || is_array($value);
     }
 
     private function addJsonLdKeys(array $serialized) {
