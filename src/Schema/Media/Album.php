@@ -16,6 +16,7 @@
 namespace Suluvir\Schema\Media;
 
 
+use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
@@ -32,6 +33,11 @@ use Suluvir\Schema\DatabaseObject;
 class Album extends DatabaseObject {
 
     /**
+     * @var Artist the artist of the album
+     */
+    private $artist;
+
+    /**
      * @OneToMany(targetEntity="Suluvir\Schema\Media\Song", fetch="LAZY", mappedBy="album")
      *
      * @var Song[] the album songs
@@ -39,8 +45,41 @@ class Album extends DatabaseObject {
     private $songs;
 
     /**
+     * @Column(type="string", length=4096)
+     *
      * @var string the album name
      */
     private $name;
+
+    public function __construct($name, Artist $artist = null) {
+        $this->songs = [];
+        $this->name = $name;
+        $this->artist = $artist;
+    }
+
+    /**
+     * @return Artist
+     */
+    public function getArtist() {
+        return $this->artist;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
+
+    /**
+     * @return Song[]
+     */
+    public function getSongs() {
+        return $this->songs;
+    }
+
+    public function addSong(Song $song) {
+        $this->songs[] = $song;
+    }
 
 }

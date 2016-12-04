@@ -172,4 +172,18 @@ class Song extends DatabaseObject {
         return $this->artists;
     }
 
+    /**
+     * @param Album $album
+     */
+    public function setAlbum($album) {
+        $this->album = $album;
+    }
+
+    /**
+     * @return Album
+     */
+    public function getAlbum() {
+        return $this->album;
+    }
+
 }

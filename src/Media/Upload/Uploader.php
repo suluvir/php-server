@@ -57,6 +57,9 @@ class Uploader {
             foreach ($song->getArtists() as $artist) {
                 DatabaseManager::getEntityManager()->persist($artist);
             }
+            if ($song->getAlbum() !== null) {
+                DatabaseManager::getEntityManager()->persist($song->getAlbum());
+            }
             DatabaseManager::getEntityManager()->persist($song);
         } else {
             throw new \RuntimeException("can't upload song");

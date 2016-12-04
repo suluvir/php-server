@@ -15,8 +15,10 @@
 
 namespace Suluvir\Manager\Metadata;
 use Suluvir\Log\Logger;
+use Suluvir\Manager\Media\AlbumManager;
 use Suluvir\Manager\Media\ArtistManager;
 use Suluvir\Manager\Media\SongManager;
+use Suluvir\Schema\Media\Album;
 use Suluvir\Schema\Media\Artist;
 use Suluvir\Schema\Media\Song;
 
@@ -48,6 +50,11 @@ class SongMetadataExtractor {
      * @var bool flag to see, if the fileinfo was already analyzed
      */
     private $analyzed;
+
+    /**
+     * @var Artist[] the cached artists
+     */
+    private $artists;
 
     public function __construct(Song $song, \getID3 $getID3 = null) {
         $this->getId3 = $getID3 === null ? new \getID3() : $getID3;
@@ -92,6 +99,9 @@ class SongMetadataExtractor {
      * @return Artist[] all artists of this song
      */
     public function getArtists() {
+        if ($this->artists !== null) {
+            return $this->artists;
+        }
         $this->analyze();
         $artistNames = $this->extractArtistNames($this->fileInfo["tags"]["id3v1"]["artist"]);
         $artists = [];
@@ -103,7 +113,41 @@ class SongMetadataExtractor {
             }
         }
 
+        $this->artists = $artists;
+
         return $artists;
+    }
+
+    /**
+     * Returns the first artist from the list of artists, if there is
+     * at least one artist. Will return {@code null}, if there are no artists for this song.
+     *
+     * @return null|Artist the main artist of this song
+     */
+    public function getMainArtist() {
+        $artists = $this->getArtists();
+        if (count($artists) >= 1) {
+            return $artists[0];
+        }
+        return null;
+    }
+
+    /**
+     * Extracts the songs album and fetches it from database. Will create a new album,
+     * if no album with the extracted name exists for the extracted artists. The main
+     * artist will be used.
+     *
+     * @return Album|null the album of this song.
+     */
+    public function getAlbum() {
+        $this->analyze();
+        $artist = $this->getMainArtist();
+
+        $albumName = $this->fileInfo["tags"]["id3v1"]["album"];
+        if ($albumName === "" || $albumName === null) {
+            return null;
+        }
+        return AlbumManager::getAlbumByNameAndArtist($albumName, $artist);
     }
 
     /**

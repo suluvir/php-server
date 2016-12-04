@@ -61,6 +61,7 @@ class SongManager {
         $song->setSize($metadataExtractor->getSize());
         $song->setDuration($metadataExtractor->getDuration());
         $song->setArtists($metadataExtractor->getArtists());
+        $song->setAlbum($metadataExtractor->getAlbum());
 
         return $song;
     }
