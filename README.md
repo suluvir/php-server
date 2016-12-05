@@ -4,7 +4,7 @@ This repository contains the server for the suluvir self hosted music streaming 
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/suluvir/server.svg?branch=master)](https://travis-ci.org/suluvir/server)
+[![Build Status](https://travis-ci.org/suluvir/server.svg?branch=master)](https://travis-ci.org/suluvir/server) [![Coverage Status](https://coveralls.io/repos/github/suluvir/server/badge.svg?branch=master)](https://coveralls.io/github/suluvir/server?branch=master)
 
 ## Setup
 
