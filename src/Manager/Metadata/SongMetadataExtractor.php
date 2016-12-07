@@ -103,8 +103,14 @@ class SongMetadataExtractor {
             return $this->artists;
         }
         $this->analyze();
-        $artistNames = $this->extractArtistNames($this->fileInfo["tags"]["id3v1"]["artist"]);
         $artists = [];
+        $extractedArtistNames = $this->fileInfo["tags"]["id3v1"]["artist"];
+
+        if ($extractedArtistNames === null) {
+            return $artists;
+        }
+
+        $artistNames = $this->extractArtistNames($extractedArtistNames);
 
         foreach ($artistNames as $artistName) {
             $artist = ArtistManager::getArtistByName($artistName);
@@ -144,6 +150,9 @@ class SongMetadataExtractor {
         $artist = $this->getMainArtist();
 
         $albumName = $this->fileInfo["tags"]["id3v1"]["album"];
+        if (is_array($albumName)) {
+            $albumName = $albumName[0];
+        }
         if ($albumName === "" || $albumName === null) {
             return null;
         }
