@@ -24,6 +24,7 @@ use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\Table;
 use Ramsey\Uuid\Uuid;
+use Suluvir\Linker\EntityLinker;
 use Suluvir\Schema\DatabaseObject;
 
 /**
@@ -184,6 +185,13 @@ class Song extends DatabaseObject {
      */
     public function getAlbum() {
         return $this->album;
+    }
+
+    public function jsonSerialize() {
+        $result = parent::jsonSerialize();
+        $linker = new EntityLinker();
+        $result["link:stream"] = $linker->link($this, "stream");
+        return $result;
     }
 
 }

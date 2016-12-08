@@ -23,6 +23,10 @@ use Suluvir\Schema\Media\Song;
 
 class SongManager {
 
+    private static $contentTypes = [
+        "mp3" => "audio/mpeg"
+    ];
+
     /**
      * @param string $fileName the filename
      * @return Song a new song
@@ -64,6 +68,17 @@ class SongManager {
         $song->setAlbum($metadataExtractor->getAlbum());
 
         return $song;
+    }
+
+    /**
+     * @param Song $song the song to get the content type for
+     * @return mixed|null an appropriate content type or {@code null} in no such type exists
+     */
+    public static function getContentType(Song $song) {
+        if (array_key_exists($song->getExtension(), self::$contentTypes)) {
+            return self::$contentTypes[$song->getExtension()];
+        }
+        return null;
     }
 
 }

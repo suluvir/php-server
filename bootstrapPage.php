@@ -24,7 +24,11 @@ $pageMap = [
             ],
             "song" => [
                 "" => \Suluvir\Page\Api\Songs::class,
-                "{songId}" => \Suluvir\Page\Api\Songs::class
+                "{songId}" => [
+                    "" => \Suluvir\Page\Api\Songs::class,
+                    "stream" => \Suluvir\Page\Api\StreamSong::class,
+                    "{view}" => \Suluvir\Page\Api\Relationships\SongRelationships::class
+                ]
             ]
         ]
     ],
