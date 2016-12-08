@@ -53,62 +53,45 @@ abstract class DatabaseObject implements \JsonSerializable {
         return $this->id;
     }
 
-    /**
-     * Serializes this object for json. When the {@code $serializeRelationShips} flag is set to {@code true},
-     * this method will return all relationship data. When set to {@code false}, it will return just the link
-     * to this objects information, instead.
-     *
-     * @param bool $serializeRelationShips when set to true, this method will return all relationship data
-     * @return array the json serialized data
-     */
-    private function jsonSerializeHelper($serializeRelationShips = true) {
+    public function jsonSerialize() {
         $result = [];
+
         $reflectionObject = new \ReflectionObject($this);
+        $linker = new EntityLinker();
 
         foreach ($reflectionObject->getProperties() as $property) {
             if ($property->isStatic()) {
                 continue;
             }
-            if (in_array($property->getName(), static::$skipDeeplySerializeProperties) && !$serializeRelationShips) {
-                // don't serialize complex types to avoid circular relationships being serialized
-                continue;
-            }
             $accessible = $property->isPrivate() || $property->isProtected();
             $property->setAccessible(true);
             $value =  $property->getValue($this);
-            $value = $this->serializeValue($value);
-            $result[$property->getName()] = $value;
+            if (!$this->shouldSerializeValue($value)) {
+                // don't serialize complex types, link to the views
+                $value = $linker->link($this, $property->getName());
+                $result["link:" . $property->getName()] = $value;
+            } else {
+                $value =  $property->getValue($this);
+                $value = $this->serializeValue($value);
+                $result[$property->getName()] = $value;
+            }
             $property->setAccessible($accessible);
         }
+
         $result = $this->addJsonLdKeys($result);
         return $result;
     }
 
-    public function jsonSerialize() {
-        return $this->jsonSerializeHelper();
+    private function shouldSerializeValue($value) {
+        return is_string($value) || is_numeric($value)
+            || is_bool($value) || is_array($value) || $value instanceof \DateTime;
     }
 
     private function serializeValue($value) {
         if ($value instanceof \DateTime) {
             return $value->format(DATE_ISO8601);
         }
-        if (!$this->isPrimitiveType($value)) {
-            if ($value instanceof DatabaseObject) {
-                return $value->jsonSerializeHelper(false);
-            }
-            if ($value instanceof PersistentCollection) {
-                $result = [];
-                foreach ($value as $v) {
-                    $result[] = $v->jsonSerializeHelper(false);
-                }
-                return $result;
-            }
-        }
         return $value;
-    }
-
-    private function isPrimitiveType($value) {
-        return is_string($value) || is_numeric($value) || is_bool($value) || is_array($value);
     }
 
     private function addJsonLdKeys(array $serialized) {
