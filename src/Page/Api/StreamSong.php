@@ -39,7 +39,11 @@ class StreamSong extends TextPage {
 
         $path = SongManager::getAbsolutePath($song);
         $contentType = SongManager::getContentType($song);
+
         $response->addHeader(Header::CONTENT_TYPE, $contentType);
+        $response->addHeader("Content-Disposition", "inline;filename=\"{$song->getTitle()}.mp3\"");
+        $response->addHeader("Content-Length", $song->getSize());
+
         $response->result(file_get_contents($path));
         return $response;
     }
