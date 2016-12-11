@@ -41,13 +41,12 @@ class AlbumManager {
     public static function getAlbumByNameAndArtist($name, Artist $artist = null, EntityManager $entityManager = null) {
         $entityManager = $entityManager === null ? DatabaseManager::getEntityManager() : $entityManager;
 
-        $albums = $entityManager->getRepository(Album::class)->findBy(["name" => $name]);
-        foreach ($albums as $album) {
-            if ($album->getArtist() == $artist) {
-                return $album;
-            }
+        $album = $entityManager->getRepository(Album::class)->findOneBy(
+            ["name" => $name, "artist" => $artist]);
+        if ($album === null) {
+            return self::createAlbum($name, $artist);
         }
-        return self::createAlbum($name, $artist);
+        return $album;
     }
 
 }

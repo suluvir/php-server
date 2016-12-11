@@ -18,6 +18,7 @@ namespace Suluvir\Schema\Media;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
+use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Suluvir\Schema\DatabaseObject;
@@ -33,6 +34,8 @@ use Suluvir\Schema\DatabaseObject;
 class Album extends DatabaseObject {
 
     /**
+     * @ManyToOne(targetEntity="Suluvir\Schema\Media\Artist", fetch="LAZY")
+     *
      * @var Artist the artist of the album
      */
     private $artist;
