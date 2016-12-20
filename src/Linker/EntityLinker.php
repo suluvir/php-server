@@ -46,15 +46,15 @@ class EntityLinker implements Linker {
         if ($configuration === null) {
             $configuration = SuluvirConfig::getConfiguration();
         }
-        $reflectionObject = new \ReflectionObject($object);
-        Logger::getLogger()->info("Create link for object of type {$reflectionObject->getName()} for view $view");
+        $class = get_class($object);
+        Logger::getLogger()->info("Create link for object of type $class for view $view");
 
-        if (!array_key_exists($reflectionObject->getName(), static::$linkers)) {
+        if (!array_key_exists($class, static::$linkers)) {
             Logger::getLogger()->warning("Trying to create a link for a non configured class. Will return empty string");
             return "";
         }
 
-        $linker = new static::$linkers[$reflectionObject->getName()];
+        $linker = new static::$linkers[$class];
         return $linker->link($object, $view, $configuration);
     }
 }
