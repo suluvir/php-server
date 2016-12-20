@@ -15,6 +15,12 @@
 
 require_once __DIR__ . "/vendor/autoload.php";
 
+// see this post:
+// http://stackoverflow.com/questions/14629137/jmsserializer-stand-alone-annotation-does-not-exist-or-cannot-be-auto-loaded
+\Doctrine\Common\Annotations\AnnotationRegistry::registerFile(
+    __DIR__.'/vendor/symfony/serializer/Annotation/Groups.php'
+);
+
 mb_internal_encoding(SULUVIR_ENCODING);
 
 define("SULUVIR_ROOT_DIR", __DIR__ . "/");

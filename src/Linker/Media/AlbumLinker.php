@@ -13,26 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Suluvir\Linker;
+namespace Suluvir\Linker\Media;
 
 
 use Fink\config\Configuration;
 use Suluvir\Config\SuluvirConfig;
-use Suluvir\Linker\Media\AlbumLinker;
-use Suluvir\Linker\Media\ArtistLinker;
-use Suluvir\Linker\Media\SongLinker;
-use Suluvir\Log\Logger;
-use Suluvir\Schema\Media\Album;
-use Suluvir\Schema\Media\Artist;
-use Suluvir\Schema\Media\Song;
+use Suluvir\Linker\Linker;
 
-class EntityLinker implements Linker {
-
-    private static $linkers = [
-        Song::class => SongLinker::class,
-        Artist::class => ArtistLinker::class,
-        Album::class => AlbumLinker::class
-    ];
+class AlbumLinker implements Linker {
 
     /**
      * Creates a link for accessing the given object
@@ -43,21 +31,14 @@ class EntityLinker implements Linker {
      * @return string an absolute link to the url describing of this object
      */
     public function link($object, $view = null, Configuration $configuration = null) {
-        if ($object === null) {
-            throw new \RuntimeException("given object is not allowed to be null");
-        }
         if ($configuration === null) {
             $configuration = SuluvirConfig::getConfiguration();
         }
-        $class = get_class($object);
-        Logger::getLogger()->info("Create link for object of type $class for view $view");
-
-        if (!array_key_exists($class, static::$linkers)) {
-            Logger::getLogger()->warning("Trying to create a link for a non configured class. Will return empty string");
-            return "";
+        $url = $configuration->get("url");
+        $result = $url . "/api/v1/album/" . $object->getId();
+        if ($view !== null) {
+            $result .= "/" . $view;
         }
-
-        $linker = new static::$linkers[$class];
-        return $linker->link($object, $view, $configuration);
+        return $result;
     }
 }

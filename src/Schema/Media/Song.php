@@ -26,6 +26,7 @@ use Doctrine\ORM\Mapping\Table;
 use Ramsey\Uuid\Uuid;
 use Suluvir\Linker\EntityLinker;
 use Suluvir\Schema\DatabaseObject;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Song
@@ -43,6 +44,8 @@ class Song extends DatabaseObject {
      * @ManyToMany(targetEntity="Suluvir\Schema\Media\Artist", inversedBy="songs")
      * @JoinTable(name="media_song_artist")
      *
+     * @Groups({"api"})
+     *
      * @var Artist[] the songs artists
      */
     private $artists;
@@ -51,12 +54,16 @@ class Song extends DatabaseObject {
      * @ManyToOne(targetEntity="Suluvir\Schema\Media\Album", fetch="LAZY", inversedBy="songs")
      * @JoinColumn(name="album_id", referencedColumnName="id")
      *
+     * @Groups({"api"})
+     *
      * @var Album the songs album
      */
     private $album;
 
     /**
      * @Column(type="string", length=50)
+     *
+     * @Groups({"api"})
      *
      * @var string the name of the file (without directory prefix)
      */
@@ -65,12 +72,16 @@ class Song extends DatabaseObject {
     /**
      * @Column(type="string", length=10)
      *
+     * @Groups({"api"})
+     *
      * @var string the file type extension
      */
     private $extension;
 
     /**
      * @Column(type="integer")
+     *
+     * @Groups({"api"})
      *
      * @var int the file size in byte
      */
@@ -79,6 +90,8 @@ class Song extends DatabaseObject {
     /**
      * @Column(type="string", length=1024, nullable=true)
      *
+     * @Groups({"api"})
+     *
      * @var string the songs title
      */
     private $title;
@@ -86,12 +99,16 @@ class Song extends DatabaseObject {
     /**
      * @Column(type="float", nullable=true)
      *
+     * @Groups({"api"})
+     *
      * @var double duration of the song, in seconds
      */
     private $duration;
 
     /**
      * @Column(type="datetime")
+     *
+     * @Groups({"api"})
      *
      * @var \DateTime time of creation
      */

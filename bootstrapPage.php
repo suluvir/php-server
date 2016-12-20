@@ -18,6 +18,10 @@ $pageMap = [
 
     "api" => [
         "v1" => [
+            "album" => [
+                "" => \Suluvir\Page\Api\Albums::class,
+                "{albumId}" => \Suluvir\Page\Api\Albums::class
+            ],
             "artist" => [
                 "" => \Suluvir\Page\Api\Artists::class,
                 "{artistId}" => \Suluvir\Page\Api\Artists::class
@@ -37,4 +41,5 @@ $pageMap = [
 ];
 
 $router = new \Yarf\Router();
+$router->setJsonSerializer(new \Suluvir\Serialize\JsonSerializer());
 $router->route($pageMap);

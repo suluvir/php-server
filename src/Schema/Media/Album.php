@@ -22,6 +22,7 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\OneToMany;
 use Doctrine\ORM\Mapping\Table;
 use Suluvir\Schema\DatabaseObject;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Album
@@ -36,6 +37,8 @@ class Album extends DatabaseObject {
     /**
      * @ManyToOne(targetEntity="Suluvir\Schema\Media\Artist", fetch="LAZY")
      *
+     * @Groups({"api"})
+     *
      * @var Artist the artist of the album
      */
     private $artist;
@@ -43,12 +46,16 @@ class Album extends DatabaseObject {
     /**
      * @OneToMany(targetEntity="Suluvir\Schema\Media\Song", fetch="LAZY", mappedBy="album")
      *
+     * @Groups({"api"})
+     *
      * @var Song[] the album songs
      */
     private $songs;
 
     /**
      * @Column(type="string", length=4096)
+     *
+     * @Groups({"api"})
      *
      * @var string the album name
      */

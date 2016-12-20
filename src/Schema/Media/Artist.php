@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\ManyToMany;
 use Doctrine\ORM\Mapping\Table;
 use Suluvir\Schema\DatabaseObject;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class Artist
@@ -39,12 +40,16 @@ class Artist extends DatabaseObject {
     /**
      * @ManyToMany(targetEntity="Suluvir\Schema\Media\Song", mappedBy="artists")
      *
+     * @Groups({"api"})
+     *
      * @var Song[]
      */
     private $songs;
 
     /**
      * @Column(type="string", length=4096)
+     *
+     * @Groups({"api"})
      *
      * @var string the artists name
      */
